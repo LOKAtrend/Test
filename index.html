@@ -1,97 +1,84 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Affiliate AI Generator</title>
+<title>AI Video Prompt Generator</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  font-family: Arial, sans-serif;
-}
 body{
-  background:#0f172a;
-  color:#fff;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  margin:0;
+font-family:Arial;
+max-width:600px;
+margin:auto;
+padding:20px;
 }
-.container{
-  background:#1e293b;
-  padding:24px;
-  width:100%;
-  max-width:420px;
-  border-radius:14px;
-  box-shadow:0 10px 30px rgba(0,0,0,.4);
+
+input,select,button{
+width:100%;
+padding:10px;
+margin-top:10px;
 }
-h2{
-  text-align:center;
-  margin-bottom:20px;
+
+#resultBox{
+margin-top:20px;
+padding:15px;
+border:1px solid #ccc;
+background:#f5f5f5;
+min-height:80px;
+white-space:pre-wrap;
 }
-input, select{
-  width:100%;
-  padding:12px;
-  margin-bottom:12px;
-  border-radius:8px;
-  border:none;
-  font-size:14px;
-}
-button{
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:10px;
-  background:#7c3aed;
-  color:white;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
-}
-button:hover{
-  background:#6d28d9;
-}
-#status{
-  margin-top:12px;
-  font-size:13px;
-  text-align:center;
-  color:#94a3b8;
+
+.copyBtn{
+background:#4CAF50;
+color:white;
+border:none;
+cursor:pointer;
 }
 </style>
+
 </head>
 
 <body>
 
-<div class="container">
-  <h2>Affiliate AI Tool 🚀</h2>
+<h2>AI Video Prompt Generator</h2>
 
-  <input id="product" placeholder="Nama Produk">
-  <input id="desc" placeholder="Deskripsi Produk">
+<input id="product" placeholder="Nama Produk">
+<input id="desc" placeholder="Deskripsi Produk">
 
-  <select id="style">
-    <option value="Soft Selling">Soft Selling</option>
-    <option value="Hard Selling">Hard Selling</option>
-    <option value="Storytelling">Storytelling</option>
-  </select>
+<select id="style">
+<option value="Soft selling">Soft Selling</option>
+<option value="Hard selling">Hard Selling</option>
+<option value="Storytelling">Storytelling</option>
+</select>
 
-  <select id="audience">
-    <option value="Emak-emak">Emak-emak</option>
-    <option value="Remaja">Remaja</option>
-    <option value="Sosialita">Sosialita</option>
-    <option value="Anak-anak">Anak-anak</option>
-  </select>
+<select id="audience">
+<option value="Emak-emak">Emak-emak</option>
+<option value="Remaja">Remaja</option>
+<option value="Sosialita">Sosialita</option>
+<option value="Anak-anak">Anak-anak</option>
+</select>
 
-  <button onclick="send()">Generate</button>
+<input id="scene" placeholder="Setting / Lokasi">
 
-  <div id="status"></div>
-</div>
+<select id="videostyle">
+<option value="Cinematic">Cinematic</option>
+<option value="Realistic">Realistic</option>
+<option value="UGC Style">UGC Style</option>
+<option value="TikTok Style">TikTok Style</option>
+</select>
+
+<button onclick="send()">Generate Prompt</button>
+
+<!-- HASIL -->
+<div id="resultBox"></div>
+
+<button class="copyBtn" onclick="copyText()">Copy Prompt</button>
+
 
 <script>
+
 async function send(){
 
-document.getElementById("status").innerText="Generating...";
+document.getElementById("resultBox").innerText="Generating...";
 
 const response = await fetch("https://hook.us2.make.com/bu133kl90j754j3nqwa4cborrxwyrtnm", {
 method:"POST",
@@ -102,15 +89,28 @@ body: JSON.stringify({
 product: document.getElementById("product").value,
 description: document.getElementById("desc").value,
 style: document.getElementById("style").value,
-audience: document.getElementById("audience").value
+audience: document.getElementById("audience").value,
+scene: document.getElementById("scene").value,
+videostyle: document.getElementById("videostyle").value
 })
 });
 
 const result = await response.text();
 
-document.getElementById("status").innerText = result;
+document.getElementById("resultBox").innerText=result;
 
 }
+
+
+function copyText(){
+
+const text=document.getElementById("resultBox").innerText;
+
+navigator.clipboard.writeText(text);
+
+alert("Prompt copied!");
+}
+
 </script>
 
 </body>
