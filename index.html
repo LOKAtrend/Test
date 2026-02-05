@@ -1,117 +1,116 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>APLIKASI PROMPT GREEN SAFIR</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Affiliate AI Generator</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{
+  box-sizing:border-box;
+  font-family: Arial, sans-serif;
+}
+body{
+  background:#0f172a;
+  color:#fff;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:0;
+}
+.container{
+  background:#1e293b;
+  padding:24px;
+  width:100%;
+  max-width:420px;
+  border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+h2{
+  text-align:center;
+  margin-bottom:20px;
+}
+input, select{
+  width:100%;
+  padding:12px;
+  margin-bottom:12px;
+  border-radius:8px;
+  border:none;
+  font-size:14px;
+}
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:10px;
+  background:#7c3aed;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:hover{
+  background:#6d28d9;
+}
+#status{
+  margin-top:12px;
+  font-size:13px;
+  text-align:center;
+  color:#94a3b8;
+}
+</style>
 </head>
 
-<body class="bg-gray-100 min-h-screen flex justify-center p-4">
+<body>
 
-<main class="w-full max-w-xl bg-white p-6 rounded-xl shadow space-y-6">
+<div class="container">
+  <h2>Affiliate AI Tool 🚀</h2>
 
-  <header class="text-center">
-    <h1 class="text-2xl font-bold">APLIKASI PROMPT GREEN SAFIR</h1>
-    <p class="text-sm text-gray-500">Generator Script Affiliate AI</p>
-  </header>
+  <input id="product" placeholder="Nama Produk">
+  <input id="desc" placeholder="Deskripsi Produk">
 
-  <form id="scriptForm" class="space-y-4">
+  <select id="style">
+    <option value="Soft Selling">Soft Selling</option>
+    <option value="Hard Selling">Hard Selling</option>
+    <option value="Storytelling">Storytelling</option>
+  </select>
 
-    <input id="productName" class="w-full border p-2 rounded" placeholder="Nama Produk">
-    
-    <textarea id="productDesc" class="w-full border p-2 rounded" rows="3"
-      placeholder="Deskripsi / keunggulan produk"></textarea>
+  <select id="audience">
+    <option value="Emak-emak">Emak-emak</option>
+    <option value="Remaja">Remaja</option>
+    <option value="Sosialita">Sosialita</option>
+    <option value="Anak-anak">Anak-anak</option>
+  </select>
 
-    <select id="sceneCount" class="w-full border p-2 rounded">
-      <option value="3">3 Scene</option>
-      <option value="4">4 Scene</option>
-      <option value="5">5 Scene</option>
-    </select>
+  <button onclick="send()">Generate</button>
 
-    <div class="text-sm space-y-1">
-      <label><input type="radio" name="style" value="Soft Selling"> Soft Selling</label><br>
-      <label><input type="radio" name="style" value="Hard Selling"> Hard Selling</label><br>
-      <label><input type="radio" name="style" value="Review"> Review</label><br>
-      <label><input type="radio" name="style" value="Edukasi"> Edukasi</label>
-    </div>
-
-    <div class="text-sm space-y-1">
-      <label><input type="checkbox" value="Emak-emak"> Emak-emak</label><br>
-      <label><input type="checkbox" value="Mahasiswi"> Mahasiswi</label><br>
-      <label><input type="checkbox" value="Karyawan"> Karyawan</label>
-    </div>
-
-    <button class="w-full bg-green-500 text-white py-2 rounded font-semibold">
-      🤖 GENERATE SCRIPT AI
-    </button>
-
-  </form>
-
-  <textarea id="resultScript" rows="10"
-    class="w-full border p-2 rounded"
-    placeholder="Hasil script akan muncul di sini..."></textarea>
-
-  <button id="copyBtn" class="w-full bg-blue-500 text-white py-2 rounded">
-    📋 Copy Script
-  </button>
-
-</main>
+  <div id="status"></div>
+</div>
 
 <script>
-const AI_SERVER_URL =
-"https://script.google.com/macros/s/AKfycbyHQLowEP0UOmkoXpuam8MAu1GFdSvDfA-fbXhLYBhKdeacBLeR5TOm3LgAJnz6vEpp-Q/exec";
+function send(){
+  document.getElementById("status").innerText = "Mengirim data...";
 
-const form = document.getElementById("scriptForm");
-const result = document.getElementById("resultScript");
-const copyBtn = document.getElementById("copyBtn");
-
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const productName = document.getElementById("productName").value.trim();
-  const productDesc = document.getElementById("productDesc").value.trim();
-  const sceneCount  = document.getElementById("sceneCount").value;
-  const style = document.querySelector('input[name="style"]:checked')?.value;
-
-  const audience = [];
-  document.querySelectorAll('input[type="checkbox"]:checked')
-    .forEach(cb => audience.push(cb.value));
-
-  if (!productName || !productDesc || !style) {
-    alert("Lengkapi semua data dulu");
-    return;
-  }
-
-  result.value = "🤖 AI sedang menulis script...";
-
-  const params = new URLSearchParams();
-  params.append("productName", productName);
-  params.append("productDesc", productDesc);
-  params.append("sceneCount", sceneCount);
-  params.append("style", style);
-  params.append("audience", audience.join(", "));
-
-  try {
-    const res = await fetch(AI_SERVER_URL, {
-      method: "POST",
-      body: params
-    });
-
-    const data = await res.json();
-    result.value = data.result || "AI tidak memberi respon";
-
-  } catch (err) {
-    result.value = "❌ Gagal terhubung ke server AI";
-  }
-});
-
-copyBtn.onclick = () => {
-  result.select();
-  document.execCommand("copy");
-  alert("Script berhasil di-copy 🚀");
-};
+  fetch("https://hook.us2.make.com/bu133kl90j754j3nqwa4cborrxwyrtnm", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      product: document.getElementById("product").value,
+      description: document.getElementById("desc").value,
+      style: document.getElementById("style").value,
+      audience: document.getElementById("audience").value
+    })
+  })
+  .then(() => {
+    document.getElementById("status").innerText = "Berhasil dikirim ✔";
+  })
+  .catch(() => {
+    document.getElementById("status").innerText = "Gagal ❌";
+  });
+}
 </script>
 
 </body>
