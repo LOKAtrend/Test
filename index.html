@@ -106,31 +106,22 @@
 </main>
 
 <script>
-/* ================= CONFIG ================= */
-const AI_SERVER_URL =
-"https://script.google.com/macros/s/AKfycbz_FZPlbFKxrCySP5JVV7yj8dFpEBLvxuaa_0j76CeEuCQWs5gjrlzgJwrvU1RNN_tmpg/exec";
+const AI_SERVER_URL = "https://script.google.com/macros/s/AKfycbz_FZPlbFKxrCySP5JVV7yj8dFpEBLvxuaa_0j76CeEuCQWs5gjrlzgJwrvU1RNN_tmpg/exec";
 
-/* ============== VALIDASI GAMBAR ============== */
-const imageInput = document.getElementById("images");
-imageInput.addEventListener("change", () => {
-  if (imageInput.files.length > 5) {
-    alert("Maksimal upload 5 gambar");
-    imageInput.value = "";
-  }
-});
+const form = document.getElementById("scriptForm");
+const result = document.getElementById("resultScript");
 
-/* ============== GENERATE ============== */
-document.getElementById("generateBtn").addEventListener("click", async () => {
-  const productName = document.getElementById("productName").value.trim();
-  const productDesc = document.getElementById("productDesc").value.trim();
-  const sceneCount  = document.getElementById("sceneCount").value;
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const productName = productNameEl.value.trim();
+  const productDesc = productDescEl.value.trim();
+  const sceneCount  = sceneCountEl.value;
   const style       = document.querySelector('input[name="style"]:checked')?.value;
 
   const audience = [];
   document.querySelectorAll('input[type="checkbox"]:checked')
     .forEach(cb => audience.push(cb.value));
-
-  const result = document.getElementById("resultScript");
 
   if (!productName || !productDesc || !style) {
     alert("Lengkapi semua data dulu");
@@ -139,34 +130,28 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
 
   result.value = "🤖 AI sedang menulis script...";
 
+  const params = new URLSearchParams();
+  params.append("productName", productName);
+  params.append("productDesc", productDesc);
+  params.append("sceneCount", sceneCount);
+  params.append("style", style);
+  params.append("audience", audience.join(", "));
+
   try {
     const res = await fetch(AI_SERVER_URL, {
       method: "POST",
-      body: JSON.stringify({
-        productName,
-        productDesc,
-        audience,
-        style,
-        sceneCount
-      })
+      body: params
     });
 
     const data = await res.json();
-    result.value = data.result || "⚠️ Tidak ada respon dari AI";
+    result.value = data.result || "⚠️ AI tidak mengembalikan hasil";
 
-  } catch (e) {
+  } catch (err) {
     result.value = "❌ Gagal terhubung ke AI server";
   }
 });
-
-/* ============== COPY ============== */
-document.getElementById("copyBtn").addEventListener("click", () => {
-  const result = document.getElementById("resultScript");
-  result.select();
-  document.execCommand("copy");
-  alert("Script berhasil di-copy 🚀");
-});
 </script>
+  
 
 </body>
 </html>
