@@ -89,27 +89,27 @@ button:hover{
 </div>
 
 <script>
-function send(){
-  document.getElementById("status").innerText = "Mengirim data...";
+async function send(){
 
-  fetch("https://hook.us2.make.com/bu133kl90j754j3nqwa4cborrxwyrtnm", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      product: document.getElementById("product").value,
-      description: document.getElementById("desc").value,
-      style: document.getElementById("style").value,
-      audience: document.getElementById("audience").value
-    })
-  })
-  .then(() => {
-    document.getElementById("status").innerText = "Berhasil dikirim ✔";
-  })
-  .catch(() => {
-    document.getElementById("status").innerText = "Gagal ❌";
-  });
+document.getElementById("status").innerText="Generating...";
+
+const response = await fetch("https://hook.us2.make.com/bu133kl90j754j3nqwa4cborrxwyrtnm", {
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify({
+product: document.getElementById("product").value,
+description: document.getElementById("desc").value,
+style: document.getElementById("style").value,
+audience: document.getElementById("audience").value
+})
+});
+
+const result = await response.text();
+
+document.getElementById("status").innerText = result;
+
 }
 </script>
 
