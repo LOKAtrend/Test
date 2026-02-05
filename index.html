@@ -11,9 +11,7 @@
     tailwind.config = {
       theme: {
         extend: {
-          colors: {
-            primary: '#22c55e'
-          }
+          colors: { primary: '#22c55e' }
         }
       }
     }
@@ -26,16 +24,12 @@
 
   <!-- HEADER -->
   <header class="text-center space-y-1">
-    <h1 class="text-2xl font-bold text-gray-800">
-      APLIKASI PROMT GREEN SAFIR
-    </h1>
-    <p class="text-gray-600 text-sm">
-      Buat Script Konten Affiliate Otomatis (AI)
-    </p>
+    <h1 class="text-2xl font-bold text-gray-800">APLIKASI PROMT GREEN SAFIR</h1>
+    <p class="text-gray-600 text-sm">Buat Script Konten Affiliate Otomatis (AI)</p>
   </header>
 
   <!-- FORM -->
-  <form id="scriptForm" class="space-y-4">
+  <div class="space-y-4">
 
     <div>
       <label class="block text-sm font-medium mb-1">Upload Gambar (Max 5)</label>
@@ -89,12 +83,13 @@
       </div>
     </div>
 
-    <button type="submit"
+    <!-- BUTTON -->
+    <button id="generateBtn"
       class="w-full bg-primary hover:bg-green-600 text-white font-semibold py-2 rounded-lg">
       🤖 GENERATE SCRIPT (AI)
     </button>
 
-  </form>
+  </div>
 
   <!-- RESULT -->
   <section class="space-y-2">
@@ -102,7 +97,7 @@
     <textarea id="resultScript" rows="8"
       class="w-full text-sm border rounded-lg p-2"></textarea>
 
-    <button id="copyBtn" type="button"
+    <button id="copyBtn"
       class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg">
       📋 Copy Script
     </button>
@@ -110,28 +105,22 @@
 
 </main>
 
-<!-- SCRIPT -->
 <script>
-const AI_SERVER_URL = "https://script.google.com/macros/s/AKfycbz_FZPlbFKxrCySP5JVV7yj8dFpEBLvxuaa_0j76CeEuCQWs5gjrlzgJwrvU1RNN_tmpg/exec";;
+/* ================= CONFIG ================= */
+const AI_SERVER_URL =
+"https://script.google.com/macros/s/AKfycbz_FZPlbFKxrCySP5JVV7yj8dFpEBLvxuaa_0j76CeEuCQWs5gjrlzgJwrvU1RNN_tmpg/exec";
 
-/* VALIDASI GAMBAR */
+/* ============== VALIDASI GAMBAR ============== */
 const imageInput = document.getElementById("images");
-if (imageInput) {
-  imageInput.addEventListener("change", () => {
-    if (imageInput.files.length > 5) {
-      alert("Maksimal upload 5 gambar");
-      imageInput.value = "";
-    }
-  });
-}
+imageInput.addEventListener("change", () => {
+  if (imageInput.files.length > 5) {
+    alert("Maksimal upload 5 gambar");
+    imageInput.value = "";
+  }
+});
 
-const form = document.getElementById("scriptForm");
-const result = document.getElementById("resultScript");
-
-/* SUBMIT */
-form.addEventListener("submit", async (e) => {
-  e.preventDefault(); // ⛔ stop reload
-
+/* ============== GENERATE ============== */
+document.getElementById("generateBtn").addEventListener("click", async () => {
   const productName = document.getElementById("productName").value.trim();
   const productDesc = document.getElementById("productDesc").value.trim();
   const sceneCount  = document.getElementById("sceneCount").value;
@@ -140,6 +129,8 @@ form.addEventListener("submit", async (e) => {
   const audience = [];
   document.querySelectorAll('input[type="checkbox"]:checked')
     .forEach(cb => audience.push(cb.value));
+
+  const result = document.getElementById("resultScript");
 
   if (!productName || !productDesc || !style) {
     alert("Lengkapi semua data dulu");
@@ -151,7 +142,6 @@ form.addEventListener("submit", async (e) => {
   try {
     const res = await fetch(AI_SERVER_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         productName,
         productDesc,
@@ -164,14 +154,14 @@ form.addEventListener("submit", async (e) => {
     const data = await res.json();
     result.value = data.result || "⚠️ Tidak ada respon dari AI";
 
-  } catch (err) {
+  } catch (e) {
     result.value = "❌ Gagal terhubung ke AI server";
   }
 });
 
-/* COPY */
-const copyBtn = document.getElementById("copyBtn");
-copyBtn.addEventListener("click", () => {
+/* ============== COPY ============== */
+document.getElementById("copyBtn").addEventListener("click", () => {
+  const result = document.getElementById("resultScript");
   result.select();
   document.execCommand("copy");
   alert("Script berhasil di-copy 🚀");
