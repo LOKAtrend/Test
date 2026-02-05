@@ -1,123 +1,79 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>APLIKASI PROMT GREEN SAFIR</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APLIKASI PROMPT GREEN SAFIR</title>
 
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: { primary: '#22c55e' }
-        }
-      }
-    }
-  </script>
 </head>
 
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-gray-100 min-h-screen flex justify-center p-4">
 
-<main class="w-full max-w-xl bg-white rounded-xl shadow-lg p-6 space-y-6">
+<main class="w-full max-w-xl bg-white p-6 rounded-xl shadow space-y-6">
 
-  <!-- HEADER -->
-  <header class="text-center space-y-1">
-    <h1 class="text-2xl font-bold text-gray-800">APLIKASI PROMT GREEN SAFIR</h1>
-    <p class="text-gray-600 text-sm">Buat Script Konten Affiliate Otomatis (AI)</p>
+  <header class="text-center">
+    <h1 class="text-2xl font-bold">APLIKASI PROMPT GREEN SAFIR</h1>
+    <p class="text-sm text-gray-500">Generator Script Affiliate AI</p>
   </header>
 
-  <!-- FORM -->
-  <div class="space-y-4">
+  <form id="scriptForm" class="space-y-4">
 
-    <div>
-      <label class="block text-sm font-medium mb-1">Upload Gambar (Max 5)</label>
-      <input type="file" id="images" multiple
-        class="w-full text-sm border rounded-lg p-2 bg-white">
+    <input id="productName" class="w-full border p-2 rounded" placeholder="Nama Produk">
+    
+    <textarea id="productDesc" class="w-full border p-2 rounded" rows="3"
+      placeholder="Deskripsi / keunggulan produk"></textarea>
+
+    <select id="sceneCount" class="w-full border p-2 rounded">
+      <option value="3">3 Scene</option>
+      <option value="4">4 Scene</option>
+      <option value="5">5 Scene</option>
+    </select>
+
+    <div class="text-sm space-y-1">
+      <label><input type="radio" name="style" value="Soft Selling"> Soft Selling</label><br>
+      <label><input type="radio" name="style" value="Hard Selling"> Hard Selling</label><br>
+      <label><input type="radio" name="style" value="Review"> Review</label><br>
+      <label><input type="radio" name="style" value="Edukasi"> Edukasi</label>
     </div>
 
-    <div>
-      <label class="block text-sm font-medium mb-1">Nama Produk</label>
-      <input type="text" id="productName"
-        class="w-full text-sm border rounded-lg p-2">
+    <div class="text-sm space-y-1">
+      <label><input type="checkbox" value="Emak-emak"> Emak-emak</label><br>
+      <label><input type="checkbox" value="Mahasiswi"> Mahasiswi</label><br>
+      <label><input type="checkbox" value="Karyawan"> Karyawan</label>
     </div>
 
-    <div>
-      <label class="block text-sm font-medium mb-1">Keunggulan / Deskripsi Produk</label>
-      <textarea id="productDesc" rows="3"
-        class="w-full text-sm border rounded-lg p-2"></textarea>
-    </div>
-
-    <div>
-      <p class="text-sm font-medium mb-1">Target Audience</p>
-      <div class="space-y-1 text-sm">
-        <label><input type="checkbox" value="Emak-Emak"> Emak-Emak</label><br>
-        <label><input type="checkbox" value="Ibu Arisan"> Ibu Arisan</label><br>
-        <label><input type="checkbox" value="Sosialita"> Sosialita</label><br>
-        <label><input type="checkbox" value="Mahasiswi"> Mahasiswi</label><br>
-        <label><input type="checkbox" value="Karyawan"> Karyawan</label>
-      </div>
-    </div>
-
-    <div>
-      <label class="block text-sm font-medium mb-1">Jumlah Scene Video</label>
-      <select id="sceneCount"
-        class="w-full text-sm border rounded-lg p-2 bg-white">
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-      </select>
-    </div>
-
-    <div>
-      <p class="text-sm font-medium mb-1">Gaya Video</p>
-      <div class="space-y-1 text-sm">
-        <label><input type="radio" name="style" value="Soft Selling"> Soft Selling</label><br>
-        <label><input type="radio" name="style" value="Hard Selling"> Hard Selling</label><br>
-        <label><input type="radio" name="style" value="Review"> Review</label><br>
-        <label><input type="radio" name="style" value="Edukasi"> Edukasi</label><br>
-        <label><input type="radio" name="style" value="Komedi"> Komedi</label>
-      </div>
-    </div>
-
-    <!-- BUTTON -->
-    <button id="generateBtn"
-      class="w-full bg-primary hover:bg-green-600 text-white font-semibold py-2 rounded-lg">
-      🤖 GENERATE SCRIPT (AI)
+    <button class="w-full bg-green-500 text-white py-2 rounded font-semibold">
+      🤖 GENERATE SCRIPT AI
     </button>
 
-  </div>
+  </form>
 
-  <!-- RESULT -->
-  <section class="space-y-2">
-    <h2 class="text-lg font-semibold">Hasil Script</h2>
-    <textarea id="resultScript" rows="8"
-      class="w-full text-sm border rounded-lg p-2"></textarea>
+  <textarea id="resultScript" rows="10"
+    class="w-full border p-2 rounded"
+    placeholder="Hasil script akan muncul di sini..."></textarea>
 
-    <button id="copyBtn"
-      class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg">
-      📋 Copy Script
-    </button>
-  </section>
+  <button id="copyBtn" class="w-full bg-blue-500 text-white py-2 rounded">
+    📋 Copy Script
+  </button>
 
 </main>
 
 <script>
-const AI_SERVER_URL = "https://script.google.com/macros/s/AKfycbz_FZPlbFKxrCySP5JVV7yj8dFpEBLvxuaa_0j76CeEuCQWs5gjrlzgJwrvU1RNN_tmpg/exec";
+const AI_SERVER_URL =
+"https://script.google.com/macros/s/AKfycbyHQLowEP0UOmkoXpuam8MAu1GFdSvDfA-fbXhLYBhKdeacBLeR5TOm3LgAJnz6vEpp-Q/exec";
 
 const form = document.getElementById("scriptForm");
 const result = document.getElementById("resultScript");
+const copyBtn = document.getElementById("copyBtn");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const productName = productNameEl.value.trim();
-  const productDesc = productDescEl.value.trim();
-  const sceneCount  = sceneCountEl.value;
-  const style       = document.querySelector('input[name="style"]:checked')?.value;
+  const productName = document.getElementById("productName").value.trim();
+  const productDesc = document.getElementById("productDesc").value.trim();
+  const sceneCount  = document.getElementById("sceneCount").value;
+  const style = document.querySelector('input[name="style"]:checked')?.value;
 
   const audience = [];
   document.querySelectorAll('input[type="checkbox"]:checked')
@@ -144,14 +100,19 @@ form.addEventListener("submit", async (e) => {
     });
 
     const data = await res.json();
-    result.value = data.result || "⚠️ AI tidak mengembalikan hasil";
+    result.value = data.result || "AI tidak memberi respon";
 
   } catch (err) {
-    result.value = "❌ Gagal terhubung ke AI server";
+    result.value = "❌ Gagal terhubung ke server AI";
   }
 });
+
+copyBtn.onclick = () => {
+  result.select();
+  document.execCommand("copy");
+  alert("Script berhasil di-copy 🚀");
+};
 </script>
-  
 
 </body>
 </html>
